@@ -55,8 +55,8 @@ async function getTotalAmount(req, res) {
     const totalAmount = await Expenses.aggregate([
       {
         $match: {
-          userId: userId,
-          category: category,
+          userId,
+          category,
         },
       },
       {
@@ -81,7 +81,7 @@ async function getChartData(req, res) {
   try {
     const { userId } = req.user;
     const expenses = await Expenses.aggregate([
-      { $match: { userId: userId, category: { $ne: "income" } } },
+      { $match: { userId, category: { $ne: "income" } } },
       {
         $group: {
           _id: { $dayOfWeek: "$createdAt" },
