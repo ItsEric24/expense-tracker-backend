@@ -43,7 +43,7 @@ async function loginUser(req, res) {
     if (!user) {
       res
         .status(400)
-        .json({ message: "wrong credentials, check email or password" });
+        .json({ message: "Wrong credentials, check email or password" });
     }
 
     const passwordCheck = await bcrypt.compare(password, user.password);
@@ -60,14 +60,12 @@ async function loginUser(req, res) {
       { expiresIn: "3d" }
     );
 
-    res
-      .status(200)
-      .json({
-        message: "Login Successfull",
-        user: user.username,
-        token,
-        userId: user._id,
-      });
+    res.status(200).json({
+      message: "Login Successfull",
+      user: user.username,
+      token,
+      userId: user._id,
+    });
   } catch (error) {
     res.status(500).json({ message: "Login unsuccessfull", error });
   }

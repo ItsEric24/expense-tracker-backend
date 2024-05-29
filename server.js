@@ -8,7 +8,10 @@ const cors = require("cors");
 const app = express();
 
 const corsOptions = {
-  origin: "https://expense-tracker-i1on.onrender.com",
+  origin: [
+    "https://expense-tracker-i1on.onrender.com",
+    "http://localhost:3000",
+  ],
   methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
   allowedHeaders: ["Content-Type", "Authorization"],
 };
