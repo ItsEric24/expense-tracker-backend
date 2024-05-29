@@ -60,7 +60,7 @@ async function loginUser(req, res) {
       { expiresIn: "3d" }
     );
 
-    res.status(200).json({
+    return res.status(200).json({
       message: "Login Successfull",
       user: user.username,
       token,
