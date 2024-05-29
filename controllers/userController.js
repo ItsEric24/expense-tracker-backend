@@ -54,7 +54,7 @@ async function loginUser(req, res) {
         .json({ message: "Wrong credentials, check password or email" });
     }
 
-    const token = await jwt.sign(
+    const token = jwt.sign(
       { userId: user._id, userEmail: user.email },
       process.env.JWT_SECRET,
       { expiresIn: "3d" }
