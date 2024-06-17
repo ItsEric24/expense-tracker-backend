@@ -11,7 +11,7 @@ async function getExpenses(req, res) {
 }
 
 async function addExpense(req, res) {
-  const { name, amount, category, description } = req.body;
+  const { name, amount, category } = req.body;
   const { userId } = req.user;
 
   try {
@@ -26,7 +26,6 @@ async function addExpense(req, res) {
       userId,
       amount,
       category,
-      description,
     });
 
     res.status(201).json({ message: "Successfully created", expense });
@@ -84,16 +83,25 @@ async function getChartData(req, res) {
       { $match: { userId, category: { $ne: "income" } } },
       {
         $group: {
-          _id: { $dayOfWeek: "$createdAt" },
+          _id: {
+            year: { $year: "$createdAt" },
+            month: { $month: "$createdAt" },
+          },
           total: { $sum: "$amount" },
         },
       },
       {
-        $sort: { _id: 1 },
+        $sort: { "_id.year": 1, "_id.month": 1 },
       },
     ]);
 
-    res.json(expenses);
+    const formattedExpenses = expenses.map((expense) => ({
+      year: expense._id.year,
+      month: expense._id.month,
+      total: expense.total,
+    }));
+
+    res.json(formattedExpenses);
   } catch (error) {
     res.status(500).json({ error: "Internal server error" });
   }
